@@ -1,0 +1,47 @@
+{
+  "$schema": "https://schemas.conda.org/menuinst/menuinst-1-1-0.schema.json",
+  "menu_name": "Gram",
+  "menu_items": [
+    {
+      "name": "Gram",
+      "description": "Powerful and modern source code editor",
+      "icon": "{{ MENU_DIR }}/app.liten.Gram.svg",
+      "command": [""],
+      "platforms": {
+        "linux": {
+          "command": ["{{ PREFIX }}/bin/gram", "%F"],
+          "StartupNotify": true,
+          "Categories": ["Utility", "TextEditor", "Development", "IDE"],
+          "GenericName": "Text Editor",
+          "StartupWMClass": "app.liten.Gram",
+          "MimeType": [
+            "application/java",
+            "application/javascript",
+            "application/json",
+            "application/toml",
+            "application/x-java",
+            "application/x-perl",
+            "application/x-php",
+            "application/x-ruby",
+            "application/x-shellscript",
+            "application/x-zerosize",
+            "text/css",
+            "text/csv",
+            "text/html",
+            "text/html",
+            "text/javascript",
+            "text/julia",
+            "text/markdown",
+            "text/plain",
+            "text/rust",
+            "text/x-c",
+            "text/x-c++",
+            "text/x-c++hdr",
+            "text/x-c++src",
+            "text/x"
+          ]
+        }
+      }
+    }
+  ]
+}

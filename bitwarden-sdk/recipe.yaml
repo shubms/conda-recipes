@@ -1,0 +1,48 @@
+context:
+  version: 2.0.0
+  build_number: 0
+
+package:
+  name: bitwarden-sdk
+  version: ${{ version }}
+
+source:
+  - url: https://github.com/bitwarden/sdk-sm/archive/refs/tags/python-v${{ version }}.tar.gz
+    sha256: 3042b37edcf7823228a2e25d08b944d667ce394175968f218e22613ed780ad19
+
+build:
+  number: ${{ build_number }}
+  script:
+    # - ${BUILD_PREFIX}/bin/npm install
+    # - ${BUILD_PREFIX}/bin/npm run schemas
+    - ${{ PYTHON }} -m pip install languages/python
+
+requirements:
+  build:
+    - nodejs
+  host:
+    # - ${{ compiler('c') }}
+    # - ${{ compiler('cxx') }}
+    - ${{ compiler('rust') }}
+    - maturin
+    - pip
+  run:
+    - python-dateutil
+
+tests:
+  - python:
+      imports:
+        - bitwarden_sdk
+      pip_check: true
+
+about:
+  homepage: https://bitwarden.com/products/secrets-manager
+  repository: https://github.com/bitwarden/sdk-sm
+  documentation: https://bitwarden.com/help/secrets-manager-sdk
+  summary: The Bitwarden Secrets Manager Python SDK
+  description: >-
+    Python bindings for interacting with the Bitwarden Secrets Manager.
+  license: |
+    LicenseRef-BITWARDEN-SOFTWARE-DEVELOPMENT-KIT-LICENSE-AGREEMENT
+  license_file:
+    - LICENSE

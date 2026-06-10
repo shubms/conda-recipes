@@ -1,0 +1,65 @@
+context:
+  version: 2.1.0
+  build_number: 0
+
+package:
+  name: gram
+  version: ${{ version }}
+
+source:
+  - url: https://codeberg.org/GramEditor/gram/releases/download/${{ version }}/gram-linux-x86_64-${{ version }}.tar.gz
+    sha256: 3fa904c137a9f0148bb0b23f59ec4bbcb5dc8d26f6fb28054835f4b783417ec4
+    file_name: gram-linux-x86_64-${{ version }}.tar.gz
+  - url: https://codeberg.org/GramEditor/gram/raw/branch/main/LICENSE-GPL
+    sha256: 0aa0322ea494da441088e4d9144c6720bf99d9e2e1eefcd29d1f58b19b5c4246
+    file_name: LICENSE
+
+build:
+  number: ${{ build_number }}
+  script:
+    - tar xf ${SRC_DIR}/gram-linux-x86_64-${{ version }}.tar.gz --directory ${PREFIX} --strip-components 1
+    - install -Dm0644 ${PREFIX}/share/icons/hicolor/scalable/apps/app.liten.Gram.svg -t ${PREFIX}/Menu/
+    - install -Dm0644 ${RECIPE_DIR}/menu.json ${PREFIX}/Menu/${PKG_NAME}_menu.json
+    - mv ${PREFIX}/licenses.md ${SRC_DIR}/licenses.md
+    - rm --recursive ${PREFIX}/share
+
+requirements:
+  build:
+    - ${{ compiler('cxx') }}
+    - ${{ compiler('rust') }}
+    - binutils
+    - uutils-coreutils
+
+tests:
+  - package_contents:
+      strict: true
+      bin:
+        - gram
+      lib:
+        - libXau.so.6
+        - libXdmcp.so.6
+        - libbsd.so.0
+        - libmd.so.0
+        - libxcb-xkb.so.1
+        - libxcb.so.1
+        - libxkbcommon-x11.so.0
+        - libxkbcommon.so.0
+        - libz.so.1
+      files:
+        - Menu/app.liten.Gram.svg
+        - Menu/gram_menu.json
+        - libexec/gram-editor
+  - script:
+      - gram --version
+
+about:
+  homepage: https://gram-editor.com
+  repository: https://codeberg.org/GramEditor/gram.git
+  documentation: https://gram-editor.com/docs
+  summary: What cannot be mended must be transcended.
+  description: >-
+    A code editor for humanoid apes and grumpy toads.
+  license: GPL-3.0-only
+  license_file:
+    - LICENSE
+    - licenses.md

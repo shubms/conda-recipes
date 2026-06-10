@@ -1,0 +1,73 @@
+context:
+  version: 0.23.7
+  build_number: 0
+
+package:
+  name: xonsh
+  version: ${{ version }}
+
+source:
+  - url: https://pypi.org/packages/source/x/xonsh/xonsh-${{ version }}.tar.gz
+    sha256: ce435d565e4a8e15f97c962d2694dbf33f3ab9a165430050656461a82e96677f
+
+build:
+  number: ${{ build_number }}
+  script:
+    - install -Dm644 /dev/null ${PREFIX}/etc/pixi/xonsh/global-ignore-conda-prefix
+    - ${{ PYTHON }} -m pip install .
+  python:
+    entry_points:
+      - xonsh = xonsh.main:main
+      - xonsh-cat = xonsh.xoreutils.cat:main
+      - xonsh-uname = xonsh.xoreutils.uname:main
+      - xonsh-uptime = xonsh.xoreutils.uptime:main
+  noarch: python
+
+requirements:
+  host:
+    - python >=3.11
+    - setuptools>=61
+    - jupyter_client
+    - pip
+  run:
+    - python >=3.11
+    # PTK SHELL
+    - prompt-toolkit >=3.0.29
+    - pyperclip
+    - pygments >=2.2
+    # MISC
+    - distro
+    - setproctitle
+    - ujson
+    - click
+
+tests:
+  - package_contents:
+      strict: true
+      files:
+        - etc/pixi/xonsh/global-ignore-conda-prefix
+      site_packages:
+        - xompletions/*
+        - xonsh/*
+        - xonsh-${{ version }}.dist-info/*
+        - xontrib/coreutils.py
+  - python:
+      imports:
+        - xonsh
+      pip_check: true
+  - script: xonsh -c "xonfig"
+
+about:
+  repository: https://github.com/xonsh/xonsh
+  documentation: https://xon.sh/contents.html
+  homepage: http://xon.sh
+  summary: Python-powered shell. Full-featured, cross-platform and AI-friendly.
+  description: >-
+    Xonsh is a full-featured and cross-platform Python-based shell.
+    The language is a superset of Python 3 with seamless integration of shell
+    functionality and commands. It works on all major systems including Linux,
+    macOS, Windows, BSD, Jupyter, Android and Raspberry Pi.
+  license: BSD-2-Clause
+  license_file:
+    - LICENSE
+    - AUTHORS.rst

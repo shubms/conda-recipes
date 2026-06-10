@@ -1,0 +1,40 @@
+context:
+  version: 26.5.0
+  build_number: 0
+
+package:
+  name: ansible-language-server
+  version: "${{ version }}"
+
+source:
+  url: https://registry.npmjs.org/@ansible/ansible-language-server/-/ansible-language-server-${{ version }}.tgz
+  sha256: cdace3a89292c8c73ba9f7fa80688e9211a5e0d29f679034d86bb9f2d21f8d8a
+  file_name: ansible-language-server-${{ version }}.tgz
+
+build:
+  number: ${{ build_number }}
+  script:
+    - ${BUILD_PREFIX}/bin/npm install -g ansible-language-server-${{ version }}.tgz --prefix ${{ PREFIX }}
+    - cp ${{ PREFIX }}/lib/node_modules/@ansible/ansible-language-server/LICENSE ${{ SRC_DIR }}/LICENSE
+
+requirements:
+  build:
+    - nodejs
+  run:
+    - ansible
+    - ansible-lint
+    - nodejs
+    - yamllint
+
+about:
+  homepage: https://github.com/ansible/vscode-ansible
+  repository: https://github.com/ansible/vscode-ansible
+  documentation: https://docs.ansible.com/projects/vscode-ansible/als
+  summary: Ansible language server
+  description: >-
+    Ansible IDE extension; auto-completion and integrating
+    quality assurance tools like ansible-lint, ansible syntax
+    check, yamllint, molecule and ansible-test.
+  license: MIT
+  license_file:
+    - LICENSE

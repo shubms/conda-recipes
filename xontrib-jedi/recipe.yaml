@@ -1,0 +1,36 @@
+context:
+  name: xontrib-jedi
+  version: 0.1.1
+  build_number: 0
+
+package:
+  name: ${{ name|lower }}
+  version: ${{ version }}
+
+source:
+  - url: https://pypi.org/packages/source/x/xontrib-jedi/xontrib_jedi-${{ version }}.tar.gz
+    sha256: 96a74d2dc68bd3d25130ca9e8918a048f10fb2c0b44b154c3c951f2b7f0f5041
+
+build:
+  number: ${{ build_number }}
+  script: ${{ PYTHON }} -m pip install .
+  noarch: python
+
+requirements:
+  host:
+    - poetry-core
+    - pip
+    - python
+  run:
+    - jedi
+    - xonsh
+
+tests:
+  - script: xonsh -c "xontrib load coreutils"
+
+about:
+  homepage: https://github.com/xonsh/xontrib-jedi
+  summary: Improved Xonsh's Python completions using jedi
+  description: >-
+    Xonsh Python completions using Jedi.
+  license: MIT
